@@ -45,3 +45,17 @@ bower install 위치는 bowerrc 파일내에 아래와 같이 위치를 지정�
 	"json": "bower.json"
 }
 ```
+
+bower.json 에서 
+```
+"appPath": "app",
+```
+ 이렇게 넣어두고 app 폴더 하위의 index.html에 아래와 같이 주석을 추가하면
+ bower로 라이브러리 추가 시, js 와 css가 자동으로 index.html에 추가된다.
+ ```
+ <!-- bower:js -->
+ <!-- endbower -->
+ 
+ <!-- bower:css -->
+ <!-- endbower -->
+```
