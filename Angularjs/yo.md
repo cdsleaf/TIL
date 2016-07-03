@@ -6,4 +6,6 @@
 Yeoman 으로 자동생성 -> Bower로 패키지매니저 -> Grunt or Gulp 로 테스트/빌드 자동화
 
 npm에 yeoman을 설치하고, 필요한 generator를 검색해서 설치한다.
-근데 버전문제인지, karma가 설치되지 않는 경우가 있다. 이땐, Global로 Karma를 별도 설치해 준다.
+근데 버전문제인지, karma가 설치되지 않는 경우가 있다. 이땐, Global로 Karma-cli를 별도 설치해 준다.
+
+하지만, 버전에 따라 달라질 수 있으니, https://karma-runner.github.io 여기를 확인하자..
