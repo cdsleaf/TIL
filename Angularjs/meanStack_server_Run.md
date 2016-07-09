@@ -7,7 +7,8 @@
  MongoDB, expressJS, AngularJs, node.js 의 약자를 딴 것이 Mean
  
  서버 구동은 우선 MongoDB 구성 부터 시작한다.
- MongoDB를 c:/MongoDB에 설치했고, 이번에 진행하려는 프로젝트의 DB저장소로 meanstack 라는 폴더를 미리 만들었다.
+ MongoDB를 c:/MongoDB에 설치했고, 
+ 이번에 진행하려는 프로젝트의 DB저장소로 meanstack 라는 폴더를 미리 만들었다.
  이후 아래 명령어로 MongoDB를 구동한다.
  
 ```
