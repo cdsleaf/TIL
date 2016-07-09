@@ -12,7 +12,7 @@
  이후 아래 명령어로 MongoDB를 구동한다.
  
 ```
-mongod - dbpath=c:/MongoDB/meanstack
+mongod -dbpath=c:/MongoDB/meanstack
 ```
 
 이후에 Grunt 또는 Gulp의 서버를 구동한다.
