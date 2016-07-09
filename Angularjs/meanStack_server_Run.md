@@ -26,3 +26,16 @@ Grunt serve
 ```
 Gulp serve
 ```
+
+종료 할 때, Gulp는 그냥 끄면 되지만,
+MongoDB는 제대로 종료해주는 게 좋다.
+
+MongoDB가 설치된 위치로 가서 쉘을 실행한다.
+bin 폴더에서 mongo 명령어로 쉘을 실행할 수 있다.
+
+이후 아래와 같이 인증된 사용자로 변경후 (admin) 
+db.shutdownServer() 명령어를 입력하면 DB서버가 종료된다.
+```
+use admin
+db.shutdownServer()
+```
