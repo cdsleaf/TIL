@@ -82,7 +82,8 @@ app.value('fooConfig', {
     https://addyosmani.com/resources/essentialjsdesignpatterns/book/
     정말 멋진 eBook 이다. 시간이 된다면 모조리 읽고 싶다!!
     
-    ```// script 
+ ```
+// script 
 app = angular.module("app", []);
 app.controller('MainCtrl', function($scope, foo) {
   $scope.foo = foo;
@@ -116,8 +117,128 @@ app.factory('foo', function() {
 </html>
 ```
 
- 4. 
+ 4. Service
+  - 생성자명칭(== 서비스명칭)을 넘기면 자동으로 new를 통하여 생성된다 
+    즉, Factory 처럼 오브젝트의 리턴이 필요없다 
+  - actory안에서 또는 service사용시 new을 여러번 하여도 반드시 한번만 인스턴스화 한다
+    즉, Singleton 패턴으로 객체 하나만이 생성된다 
+    
+ ```
+ // script 
+app = angular.module("app", []);
+
+// Service를 통해서 생성 
+app.controller('MainCtrl', function($scope, foo) {
+  $scope.foo = foo;
+});
+
+app.service('foo', function() {
+  var thisIsPrivate = "Private";
+  this.variable = "This is public";
+  this.getPrivate = function() {
+    return thisIsPrivate;
+  };
+});
+
+// Factory를 통해서 생성 : MainCtrl 에서 foo 파라미터 값과 하위 로직을 foo2로 바꿔도 동일 결과 
+app.controller('MainCtrl', function($scope, foo2) {
+  $scope.foo = foo2;
+});
+
+app.factory('foo2', function() {
+  return new Foobar();
+});
+
+function Foobar() {
+  var thisIsPrivate = "Private";
+  this.variable = "This is public";
+  this.getPrivate = function() {
+    return thisIsPrivate;
+  };
+}
+
+// 또는 펑션을 넘길 수도 있다 : : MainCtrl 에서 foo 파라미터 값과 하위 로직을 foo3로 바꿔도 동일 결과 
+app.controller('MainCtrl', function($scope, foo3) {
+  $scope.foo = foo3;
+});
+
+app.service('foo3', Foobar);
+
+// html 
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+</head>
+  <body ng-controller="MainCtrl">
+    public variable: {{foo.variable}}
+    <br />
+    private variable (through getter): {{foo.getPrivate()}}
+  </body>
+</html>
+```
+
+5. Provider
+  - Provider는 factory의 큰형님 뻘이다 
+  - $get fuction을 가지고 있어야 한다. 만일 Provider 명칭이 foo이고 controller에 inject될 때 실제는 $get function의 결과값이   inject되는 것이다. 왜 factory로 사용하면 간편한데 굳이 이렇게 할까?
+  - 이유인즉슨, config function을 통해서 provide에 대한 환경설정을 할 수 있기 때문이다 
+  - 예를 보자 
+    1) thisIsPrivate 변수가 $get 펑션 밖에 위치한다 
+    2) 따라서 setPrivate 메소드를 통하여 thisIsPrivate 변수값을 변경할 수 있다 
+    3) 이런게 하는 이유는 우리가 필요로 하는 다양한 환경값을 바꾸어서 환경설정을 하고 싶기 때문이다
+    4) Provider명칭이 'foo' 이므로 app.config 에서 'fooProvider' 명을 준다 
  
+ Provider 는 정말 모르겠다....이건 써봐야 알듯.
+```
+// script 
+app = angular.module("app", []);
+app.controller('MainCtrl', function($scope, foo) {
+  $scope.foo = foo;
+});
+
+
+app.provider('foo', function() {
+  var thisIsPrivate = "Private";
+  return {
+    setPrivate: function(newVal) {
+      thisIsPrivate = newVal; 
+    },
+    
+    $get: function() {
+      function getPrivate() {
+        return thisIsPrivate;
+      }
+
+      return {
+        variable: "This is public",
+        getPrivate: getPrivate
+      };
+    } 
+  };
+});
+
+app.config(function(fooProvider) {
+  fooProvider.setPrivate('New value from config');
+});
+
+// html 
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+</head>
+  <body ng-controller="MainCtrl">
+    public variable: {{foo.variable}}
+    <br />
+    private variable (through getter): {{foo.getPrivate()}}
+  </body>
+</html>
+```
+
  공부한 url
  http://mobicon.tistory.com/329 (윤영식님의 블로그 - 각 서비스별 예제 코드도 같이 있다!)
 http://stackoverflow.com/questions/15666048/angularjs-service-vs-provider-vs-factory
