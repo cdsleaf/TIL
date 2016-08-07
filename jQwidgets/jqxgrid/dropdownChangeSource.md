@@ -67,6 +67,12 @@ B 드롭박스의 매핑 dataAdapter를 조건에 따라 설정할 수 있다.
 
 
                                 editor.jqxDropDownList({ source: listSource, displayMember: 'label', valueMember: 'value' });
+                                
+                                editor.on('change', function (event) {
+                                    console.log("check", event.args.item.value);
+
+                                });
+                                
                                 });
                             }
                         }
