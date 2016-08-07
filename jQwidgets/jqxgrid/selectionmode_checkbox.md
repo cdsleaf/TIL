@@ -17,6 +17,8 @@ $("#jqxgrid").jqxGrid('getselectedrowindexes'); //이럴 경우 선택된 rows �
 
  - 그리드 헤더 및 바디의 체크박스를 체크/체크해제 시 구분하여 처리하는 이벤트 함수 
 ```
+//헤더를 체크/체크해제 했을 때 와 바디를 체크/해제 했을 때 이벤트는 독립적으로 호출된다. 
+//즉, 뭔가 처리하고 싶다면 양쪽에 모두 해당 후처리 함수를 추가 해야한다..
 $('#jqxgrid').on('rowselect', function (event) {
                 var args = event.args;
                 var row = args.rowindex;
