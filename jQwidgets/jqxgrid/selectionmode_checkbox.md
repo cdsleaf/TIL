@@ -36,6 +36,13 @@ $('#jqxgrid').on('rowselect', function (event) {
                 }else{
                     console.log("rowselect",row );
                 }
+                
+                //수정모드가 아닐때 체크박스 disable은 지금까지 찾은 방법은 아래가 다 인듯; ㅠ
+                if($('#jqxgrid').jqxGrid('editable') === false ){
+                    $('#jqxgrid').jqxGrid('unselectrow', row);
+
+                }
+                
 
             });
 
