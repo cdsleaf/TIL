@@ -45,6 +45,18 @@ $('#jqxgrid').on('rowselect', function (event) {
                 console.log("unselectedRowIndex",unselectedRowIndex );
             });
  ```
+ 
+ - 헤더의 체크박스를 안보이게 할 수도 있다.
+```
+$("#jqxgrid").jqxGrid({
+    width: 750,
+    source: dataAdapter,
+    columnsresize: true,
+    ready: function()
+    {
+        $("#jqxgrid").find('.jqx-grid-column-header:first').children().hide();
+    },
+```
 
  - 아래와 같이 selectionmode 에 checkbox 를 설정하면 그리드 좌측에 체크박스가 생긴다.
 ```
