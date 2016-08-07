@@ -8,6 +8,10 @@
 ```
  $('#jqxgrid').jqxGrid('clearselection');
 ```
+ - 현재 선택되어 있는 row의 총 수
+```
+$("#jqxgrid").jqxGrid('getselectedrowindexes').length;
+```
 
  - 그리드 헤더 및 바디의 체크박스를 체크/체크해제 시 구분하여 처리하는 이벤트 함수 
 ```
