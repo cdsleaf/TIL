@@ -39,3 +39,21 @@ testF.addVal(222);
 console.log("realGvar1", gVar);
 console.log("realGvar2", testF.getVal());
 ```
+
+ - 위의 예제는 클로저 내부 변수와 전역변수의 이름이 동일하게되어 있다. 이렇게 명명하면 안된다!!! 반드시 다르게 명명하자.
+ - 아래 예제에서 ping 객체가 만들어지면, ping 객체는 스코프를 차단하는 역할과 함께, 내부에 두개의 클로저를 포함하는 역할을 하게 된다.
+   이때, 중요한 점은 내부의 두 클로저를 제외하고는 testPrivate 변수에 접근할 방법이 없다는 것이다.
+ ````
+  var ping = (function(){
+    var testPrivate = 0;
+    
+    return {
+     plus_func : function(n){
+        return testPrivate += n;
+     },
+     minus_func : function(n){
+        return testPrivate -= n;
+     }
+   };
+ })();
+ ````
