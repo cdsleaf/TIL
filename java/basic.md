@@ -1,6 +1,6 @@
-### 항상 까먹는 기본 개념 정리
+## 항상 까먹는 기본 개념 정리
 
-1. object & class
+### 1. object & class
 
  - 객체는 객체지향프로그래밍에서 기초중에 기초. 기본중에 기본의 개념.
 객체는 동작과 상태를 가진다. 여기에서 동작은 메소드, 상태는 필드로 치환되어 프로그래밍하게 된다.
@@ -10,7 +10,7 @@
 이때 생성된 객체는 클래스의 인스턴스이다.
 
 
-2. Wrapper class 와 AutoBoxing  
+### 2. Wrapper class 와 AutoBoxing  
    (참고 사이트 : http://hyeonstorage.tistory.com/168)
 
  - Wrapper class란?
@@ -44,3 +44,8 @@
     1. 매개변수로 객체가 요구 될때.
     2. 기본형 값이 아닌 객체로 저장해야 할 때.(null 이나 제너릭 같은..)
     3. 객체간의 비교가 필요할 때. 등등
+
+### 3. Comparable과 Comparator 인터페이스의 차이는?
+
+ Comparable 인터페이스는 자연스러운 순서로 정렬 시 사용.
+ Comparator 인터페이스는 원하는 정렬순서로 지정하고 싶은 곳에 사용.
