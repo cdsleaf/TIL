@@ -5,6 +5,7 @@ https://muckycode.blogspot.kr/2015/03/javascript-execution-context-scope.html
 http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/
 http://smarttech.tistory.com/entry/Javascript-Execution-context%EC%99%80-Stack%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%A0%95%EB%A6%AC%ED%95%98%EC%9E%90
 http://alnova2.tistory.com/967
+http://huns.me/development/1407
 
 자바스크립트는 실행영역이라 번역될 수 있는 Execution Context와 스코프(scope)를 가지고 있다.  
 이러한 실행영역 덕분에 함수는 다양한 context 에서 호출 될 수 있고, 스코프가 해당 context내에서 생성/유지 될 수 있다.  
@@ -82,9 +83,21 @@ OuterEnvironmentReferece : null //최상위 이므로 null
 
 Function Code
 
+아래 예제 함수 sum은 계속 사용됨.
 ```
 function sum(x,y){
-  ...
+  console.log(barr);
+
+  var result = x + y;
+  var varr = function(){
+    console.log("barr")
+  }
+
+  function printResult(){
+    console.log(result);
+  }
+
+  return printResult;
 }
 
 sum(10,20);
@@ -121,8 +134,86 @@ localEnv = {EnvironmentRecord : {}}
 실행 컨테스트 바인딩 초기화..
 
 앞서 sum(10,20); 이렇게 인자가 입력된 상태로 sum이 실행되면,
+```
+localEnv = {
+  EnvironmentRecord : {
+    x : 10,
+    y : 20,
 
-localEnv = {EnvironmentRecord : {}}
+    printResult : function Reference, //호이스팅이 발생.
+/*
+    코드를 해석하는 단계에서 printResult 참조가 셋팅됨.
+    그래서 코드 상에 함수가 선언되지 않았음에도 해당 함수 호출이 가능함.
+    아래 예제코드에서 코드상으로는 barr 함수가 선언되지 않았음에도  
+    console.log(barr); 가 호출됨.
+
+    ex) console.log(barr);
+        var barr = function(){
+          ...
+        }
+*/
+    result : undefined,
+    barr : undefined //변수 선언식이라 나중에 해석됨.그래서 undefined.
+  }
+}
+```
+
+identifier resolution
+식별자와 묶여있는 값을 찾아가는 과정  
+스코프 체인의 원리.
+
+outer Enviromnet Reference
+=> The outer Enviromnet reference is used to model the logical nesting of Lexical Environment values.
+
+```
+var a = 10;
+
+(function foo(){
+  var b = 20;
+
+  (function bar(){
+    var c = 30;
+    console.log(a + b + c);
+  })();
+})();
+```
+
+실행 컨텍스트 스택은 아래와 같이 쌓인다. barEC가 최상위
+
+barEC
+```
+LexicalEnviroment : {
+  EnvironmentRecord : {
+    c : 30
+  }
+  OuterEnvironmentReferece : fooEC.LexicalEnviroment
+}
+```
+fooEC
+```
+LexicalEnviroment : {
+  EnvironmentRecord : {
+    b : 20
+  }
+  OuterEnvironmentReferece : globalEC.LexicalEnviroment
+}
+```
+globalEC
+```
+LexicalEnviroment : {
+  EnvironmentRecord : {
+    a : 10
+  }
+  OuterEnvironmentReferece : null
+}
+```
+
+이제 console.log(a+b+c) 에서 a를 찾을 때 barEC 를 먼저 찾고 없으면 OuterEnvironmentReferece 를 통해서 fooEC 를 찾고 없으면 다시 OuterEnvironmentReferece를 찾아서 a의 찾아간다. 이런식으로 스코프 체인이 실행된다.
+
+Closure - 자유변수를 간직한 코드 블럭
+유효범위 밖에 있는 값의 참조를 간직하고 있는 코드블럭
+
+
 
 ---
 
