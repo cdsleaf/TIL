@@ -1,4 +1,6 @@
-# Execution Context (실행 영역)- 수정 중. 현재 내용은 es5 기준이며, ECMAScript2015 내용확인 하고 보완 필요.
+# Execution Context (실행 영역)- 수정 중.  
+
+// TODO : 현재 내용은 es5 기준이며, ECMAScript2015 내용확인 하고 보완 필요.
 
 참고 사이트  
 https://muckycode.blogspot.kr/2015/03/javascript-execution-context-scope.html  
