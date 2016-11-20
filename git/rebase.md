@@ -10,7 +10,7 @@ https://backlogtool.com/git-guide/kr/stepup/stepup2_8.html   rebase 로 병합�
 merge와 rebase 둘다 브랜치를 병합할 수 있다. 이때 차이점은 merge는 히스토리가 남지만, rebase는 복잡한 merge 이력 없이 깔끔하게 이력을 정리할 수 있는 장점이 있다.  
 또한, 로컬에서 여러개의 커밋으로 되어 있는 이력을 원격 저장소에 push 시 한번의 커밋이력으로 올리고 싶을 경우, rebase를 사용하면 이러한 이력들을 하나로 합칠 수도 있다.  
 
-## 1. 여러개의 이력을 하나로 통합시켜주는 커밋 이력 정리.
+## 1. 여러개의 이력을 하나로 통합시켜주는 커밋 이력 정리. -> squash
 
 git log 를 했을 때, 아래와 같이 여러개의 이력이 보일 경우,
 ```
@@ -47,3 +47,11 @@ git rebase -i HEAD~3
         1 #
         0 # Note that empty commits are commented out
 ```
+
+## 2. 과거의 특정 시점의 커밋의 코멘트 또는 파일 정보를 변경. -> edit
+
+//작성중.
+
+## 3. 갈라지고 다시 합쳐지는 복잡한 이력 없이 마치 원래 하나 였던 것 처럼 이력을 유지하며 병합.
+
+//작성중.
