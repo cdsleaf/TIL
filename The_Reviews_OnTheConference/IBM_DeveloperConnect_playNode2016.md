@@ -1,6 +1,8 @@
-# 개발자와 IBM, 새로운 관계의 시작 
+# 개발자와 IBM, 새로운 관계의 시작
 
 정창우 상무 한국IBM연구소 및 클라이언트 센터 총괄.
+
+<img align="center" src="C:\Users\SDS\Pictures\d3.js로 구현한 OLAS SM Block Time Plan.jpg" alt="ibmImage", width="350", height="100">
 
  - 앞으로는 cloud platform, Congnitive Solution  
 
