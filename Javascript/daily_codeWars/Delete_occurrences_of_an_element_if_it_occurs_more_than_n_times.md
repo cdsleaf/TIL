@@ -34,7 +34,6 @@ function deleteNth(arr,x) {
 }
 
 ```
-
 best practice2
 ```
 function deleteNth(arr, x){
