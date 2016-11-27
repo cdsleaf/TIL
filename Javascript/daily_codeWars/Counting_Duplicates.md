@@ -16,7 +16,15 @@ Example
 "aa11" -> 2 # 'a' and '1'
 ```
 
-solution
-```
+solution  
 
+```
+function duplicateCount(text){
+  let replaceText = (str, count) => {
+    if(str.length === 0) return count;
+    if(str.substr(1).includes(str[0])) count++;
+    return replaceText(str.replace(new RegExp(str[0], 'ig'), "") ,count);
+  }
+  return replaceText(text.toUpperCase(),0);
+}
 ```
