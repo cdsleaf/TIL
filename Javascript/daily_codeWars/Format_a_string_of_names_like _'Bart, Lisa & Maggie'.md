@@ -21,3 +21,12 @@ list([ {name: 'Bart'} ])
 list([])
 // returns ''
 ```
+
+solution
+```
+function list(names){
+  return names.reverse().reduce( (prev, curr, index) => {
+    return curr.name+(prev!==''?(index===1?' & ':', '):'')+prev;
+  }, '');
+}
+```
