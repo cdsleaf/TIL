@@ -1,5 +1,6 @@
 ### 금액에 add comma
 
+```
 function addComma(m){
 
   m = m.toString();
@@ -25,22 +26,27 @@ function addComma(m){
 
   return result;
 }
-
+```
 
 ### firstCall
 
-// TODO 수정 중.
-
 f(g) 일 때, g 가 한번만 호출되도록.  
 
-function f(){
-
+```
+let f =(fn)=>{
   let count = 0;
-
-  var g = function(){
-    console.log("call g()");
-    count++;
+  return function(){
+    if(count === 0){
+      fn();
+      count++;
+    }
   }
-
-  if(count == 0) g();
 }
+
+let g =_=>console.log("test g");
+
+let a = f(g);
+
+a(); // test g
+a(); // undefined
+```
