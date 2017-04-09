@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>block formatting context</title>
+<style>
+.box1 {background:#a00;}
+
+.box2 {background:#f00; float: left;}
+.box3 {float: left;}
+
+.boxA {max-width: 150px;}
+.boxA:after {
+  content:"pseudo-element";
+  display: block;
+  clear:both
+}
+</style>
+</head>
+<body>
+
+<div class="box1">
+BOX1
+</div>
+
+<div class="boxA">
+  <div class="box2">
+    BOX2
+  </div>
+  <div class="box3">
+    BOX3
+  </div>
+</div>
+
+<div class="box4">
+BOX4
+</div>
+</body>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>block formatting context</title>
+</head>
+<body>
+<div style="background:rgb(39,241,188)">
+	<div style="float:left;width:100px;height:100px;background:#f00">
+		<div style="margin:10px;float:left;width:50px;height:200px;background:#ff0"></div>
+	</div>
+	sample inline text. sample inline text. sample inline text. sample inline text. sample inline text.
+  <!-- 글씨는 inline IFC 이기 때문에 우측으로 보이는 것 뿐이지 실제 글씨가 있는 box의 크기는 빨간박스 좌측끝까지 임. 빨간박스는 떠있는 상태.   -->
+</div>
+
+
+<div style="clear:both;margin-bottom:200px"></div>
+
+<div style="overflow:hidden;background:rgb(39,241,188)">
+	<div style="float:left;width:100px;height:100px;background:#f00">
+		<div style="margin:10px;float:left;width:50px;height:200px;background:#ff0"></div>
+	</div>
+	sample inline text. sample inline text. sample inline text. sample inline text. sample inline text.
+</div>
+
+</body>
+</html>
