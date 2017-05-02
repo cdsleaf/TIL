@@ -1,58 +1,54 @@
-# Basic
+# CSS Basic
 
-## Box Model
+## 선택자
 
-Margin > border > padding > contents  
-실제 영역은 border~contents 까지. margin은 box 영역외.
+### 선택자와 선언
 
-1. contents : box-sizing:content-box  // width, height, min-width, max-width
-2. padding : box-sizing:padding-box // width, height
-3. border : box-sizing:border-box // width, height
-
-## Normal Flow
-
-DEFINITION :
-```
-Normal flow is the way that elements are displayed in a web page in most circumstances.   
-All elements in HTML are inside boxes which are either inline boxes or block boxes.  
+CSS 기본적인 문법
+- CSS를 적용하고자 하는 태그(선택자)
+- 선택자에 적용할 디자인(선언)
+```Html5
+<style>
+li(선택자) {color:red;}(선언)
+</style>
 ```
 
-Block :세로, Inline :가로  
+선언하는 내용 끝에 세미콜론 붙이는 것을 습관화하는게 좋다
 
-1. BFC (BlockFormattingContext) : block 요소를 담을 수 있는 일종의 컨테이너.
+### 선택자의 종류
 
-Create : BFC가 생성되는 조건들.
-root  
-float != none  
-display == inline-block, table-cell, table-caption  
-overflow != visible  
-flex box  
+- 태그 선택자 : 모든 선택자에 디자인 적용(그냥 태그 이름)
+- 아이디 선택자 : 고유한 하나의 태그에만 아이디 부여해서 디자인 적용(#아이디 이름)
+- 클래스 선택자 : 여러 개의 태그를 클래스로 그룹핑해서 디자인 적용(.클래스 이름)
 
-Containing  :  자식 엘리먼트는 모두 BFC에 포함된다는 말...새로운 BFC 내부는 미포함.
-A block formatting context contains everything inside of the  
-element creating it that is not also inside a descendant  
-element that creates a new block formatting context.  
+### 부모 자식 선택자
 
-2. IFC (InlineFormattingContext)
-
-## pseudo-elements
-
-아래에서 after 가 pseudo-elements. 있지만 없는 것.  
-여기에서는 .boxA의 마지막 영역에 pseudo-element 를 만들어 붙인다는 의미.  
-태그도 없고 아무것도 없지만. 아무튼 존재함. 그리고 content가 존재.평문 텍스트만 넣을 수 있음  
-중첩된 엘리먼트를 만들순 없다.  
+아래의 태그는 ul 밑에 있는 모든 태그를 선택합니다.  
 ```
-.boxA:after {content: "",
-                  display: block;
-                  clear: both}
+ul li{
+    color:red;
+}
+```
+아래 선택자는 #lecture 바로 밑에 있는 li만을 선택합니다.
+```
+#lecture>li{
+    border:1px solid red;
+}
+```
+아래 코드는 ul과 ol을 동시에 선택합니다.
+```
+ul,ol{
+    background-color: powderblue;
+}
 ```
 
-## Media query
+### 선택자 공부 팁
 
-1. Media Type
+선택자 배우기 좋은 사이트
+http://flukeout.github.io/#
 
-css : all, print, screen, speech  
+### 가상 클래스 선택자
 
-2. Display Area vs Device
-
-3. Media feature : Media query 에서 사용할 수 있는 속성.
+클래스 선택자처럼 행동하지만 클래스 선택자는 아닌 선택자(엘리먼트의 특성에 따라 클래스 선택자처럼 몇몇 태그를 그룹핑한다.)
+- hover, active, link, visited등(visited는 보안상의 문제 때문에 일부 속성만 사용 가능)  
+style 태그에서 위에 있는 것이 우선순위가 높다.

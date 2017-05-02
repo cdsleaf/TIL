@@ -1,6 +1,6 @@
 # HTML Basic
 
-## tag 의 중첩과 목록
+## tag 의 중첩 과 목록
 
 
 1. ol : ordered list  
@@ -124,3 +124,38 @@ input types
  - time : 시간
  - url : url 정보
  - week : 날짜의 주
+
+### Html5 입력양식의 속성들
+
+- 자동완성기능 :
+```
+<form autocomplete="on">
+```
+을 하면 예전의 입력받았던 값들을 브라우저가 기억해 다음에는
+자동으로 완성해준다. (부분적으로 이 기능을 끄고 싶다면 해당하는 input태그의 autocomplete값을 off하면 됨)
+- 자동포커싱기능 : 웹페이지가 떴을 때 포커싱이 갔으면 하는 부분이 있다면 그 input태그에 autofocus속성 추가
+
+```HTML5
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <form action="login.php" autocomplete="on">
+            <input type="text" name="id" placeholder="id를 입력해주세요." autofocus>
+            <input type="password" name="password" autocomplete="off" placeholder="비밀번호를 입력해주세요.">
+            <input type="submit">
+        </form>
+    </body>
+</html>
+```
+
+### Html5 입력 값 체크
+
+입력값체크(유효성 검사) : 사용자가 입력한 값이 올바른지 검사하는 기능
+- 필수적으로 입력해야 하는 부분 : 속성 required 추가
+- 패턴에 맞게 입력해야 하는 부분 : 속성 pattern=에 정규 표현식 추가
+- 정규표현식 : HTML과는 다른 프로그래밍 언어([a-zA-z] : 알파벳 하나, . : 아무거나, + : 하나 이상, [0-9] : 숫자하나
+
+-> 유효성 검사는 사용자가 입력하기 쉽게 하기 위한 장치로 인식해야지, 검사를 통과한 값들을 무조건적으로 신뢰해서는 안됨.
