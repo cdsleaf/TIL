@@ -155,7 +155,7 @@ ex) display:inline, display:block
 처럼 사용된다.
 3. 위,아래 엘리먼트들이 있을 때 위의 시각적 요소가 없어지면 위,아래 중 마진이 큰 쪽이 아래 마진처럼 사용된다
 
-### 포지션- 여기부터.
+### 포지션
 
 엘리먼트의 위치를 정하는 속성 position 속성값 4가지  
 1. static(기본값) : 움직이지 않고 정적인 상태
@@ -165,3 +165,30 @@ ex) display:inline, display:block
 그리고 값을 아예 없애면 원래 위치로 돌아간다.  
 4. fixed : 스크롤을 움직여도 지정된 위치에 고정된다.
 * absolute와 마찬가지로 부모와의 관계가 끊기고 크기는 자신의 컨텐츠만 해진다.
+
+### flex
+
+(화면 전체를 사용하는 태그를 'Block-element' 라고 한다.)
+
+flex : 레이아웃을 좀 더 쉽게 짜기 위해 고안됨. item과 그것을 담을 container가 필요.  
+
+- 컨테이너의 속성에 display:flex;를 하는 것부터 시작
+- 여러 속성들  
+flex-basis : 크기 지정,    
+flex-grow : 아이템들이 컨테이너를 나눠갖는 비율 결정,   
+flex-shrink : 화면이 작아질 때 줄어 드는 비율 결정,    
+flex-diretion : 컨테이너 방향 결정(row: 좌우로 나열되는 것 처럼 보임, column: block 상태와 유사),  
+flex-wrap : 아이템 크기가 컨테이너 크기보다 크다면 줄바꿈,    
+align-items : 수직 관련 정렬,   
+justify-items : 수평 관련 정렬,  
+align-content : 아이템을 그룹핑해서 정렬,  
+align-self : 특정 아이템만 크기 다르게,  
+flex : flex-grow + shrink + basis, order : 아이템의 순서 바꿈.  
+
+- holy grail layout : 이런 형태의 레이아웃을 flex를 통해 쉽게 만들 수 있음
+```
+<header>
+<section> - <nav>,<main>,<aside> 수평 정렬
+<footer>
+수직 정렬
+```
