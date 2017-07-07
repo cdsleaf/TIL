@@ -192,3 +192,58 @@ flex : flex-grow + shrink + basis, order : 아이템의 순서 바꿈.
 <footer>
 수직 정렬
 ```
+
+### media query
+
+다양한 미디어의 크기에 따라 웹페이지를 다르게 할 수 있는 기술(반응형 디자인의 핵심)  
+예) 최대 ...px까지는 혹은 최소 ...px부터는 ~~~을 적용한다
+```html
+<style>
+        @media (max-width:600px){
+            body{
+                background-color: green;
+            }
+        }
+        @media (max-width:500px){
+            body{
+                background-color: red;
+            }
+        }
+        @media (min-width:601px){
+            body{
+                background-color: blue;
+            }
+        }
+</style>
+```
+### float
+
+본문에 이미지를 삽입하기위한 용도.  
+````html
+<img style="float:left">
+<p>
+</p>
+<p>
+</p>  
+```
+위와 같은 경우에 p 태그의 스타일에 clear:both 를 추가하면 img 태그의 float 효과를 clear 시킨다는 의미임. 이때, both는 float 의 left, right 둘다 clear 시키겠다는 것.  
+
+### 다단(multi column)
+
+- 다단을 만들때 column-count: 숫자
+```html
+<style>.column{text-align: justify;column-count: 4;/* column-width: 200px;*/column-gap:30px;column-rule-style: solid;column-rule-width: 5px;column-rule-color: red;}h1{column-span: all;}</style>
+```
+
+## 그래픽
+
+### 배경(background)
+
+background : 엘리먼트의 배경에 이미지나 색깔 등을 지정할 수 있는 속성  
+- background-color : red  (색깔 지정)   
+- background-image : url("bg.png") 이미지 지정(배경이 투명한 이미지를 쓰면 color와 같이 쓸수있음)  
+- background-repeat : repeat, no-repeat, repeat-x, repeat-y  반복에 관한 설정,   
+- background-attachment : scroll, fixed 스크롤 내릴 때 배경도 같이 내릴지 안내릴지  
+- background-size :  100px 100px or cover or contain  크기에 관한 설정(cover, contain : 손실있어도 꽉차게, 꽉안차도 손실없게),
+- background-position : left top  or x% y% or x y 위치 결정  
+background : 축약형
