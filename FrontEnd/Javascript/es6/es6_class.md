@@ -60,12 +60,13 @@ const Child = class extends Parent{
 
 ```javascript
 const Parent = class{
+
   constructor(a){
-    this.a = a;
+    this._a = a;
   }
 
   test(){
-    return this.a+'parent';
+    return this._a+'parent';
   }
 };
 
@@ -84,4 +85,14 @@ const Child = class extends Parent{
     return v+this.b+':child';
   }
 };
+```
+
+그외...  
+
+es6 class 는 호이스팅을 허용하지 않는다.  
+아래와 같은 경우 에러가 발생 한다. 클래스를 사용하려면 먼저 선언해야 함.  
+```javascript
+let a = new testCase();
+
+Class testCalse {}
 ```
