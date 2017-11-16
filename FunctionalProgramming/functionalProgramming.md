@@ -57,3 +57,67 @@ for, if문과 같은 기계적인 절차적 프로그래밍 보다,
 2. 상태가 없는 순수 함수를 조합하여 큰 단위 함수를 만드는 방식
 3. 코드의 재사용성, 조합성이 좋음
 4. 상태에 의존적이지 않기 때문에 병렬화 하기 수월함
+
+---
+
+## 객체지향 프로그래밍에서는
+
+문제를 부분으로 잘게 나누는 것.
+
+![150%](images/oop.JPG)
+
+---
+## 함수형 프로그래밍에서는
+문제를 함수형 부분으로 나눈다.
+![150%](images/functional_1.JPG)
+
+---
+
+![150%](images/functional_2.JPG)
+
+---
+
+![150%](images/functional_3.JPG)
+
+---
+
+## 실제 코드로 비교해보면..
+
+##### 기존 명령형 프로그래밍
+```java
+public class TheCompanyProcess { 
+    public String cleanNames(List<String> listOfNames){
+        StringBuilder result = new StringBuilder();
+        for(String name: listOfNames){
+            if(name.length() > 1){
+                result.append(capitalizeString(name)).append(",");
+            }
+        }
+        return result.toString();
+    }
+
+    private String capitalizeString(String s){
+        return s.substring(0,1).toUpperCase()+s.substring(1,s.length());
+    }
+}
+
+```
+
+---
+
+##### 자바8 stream을 활용한 함수형 프로그래밍
+```java
+public class TheCompanyProcess {
+    public String cleanNames(List<String> listOfNames){
+        return listOfNames.stream()
+                .filter(name -> name != null)
+                .filter(name -> name.length() > 1)
+                .map(name -> capitalizeString(name))
+                .collect(Collectors.joining(","));
+    }
+    
+    private String capitalizeString(String s){
+        return s.substring(0,1).toUpperCase()+s.substring(1,s.length());
+    }
+}
+```
