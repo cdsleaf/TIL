@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CodeSpitz75-1</title>
+    </head>
+    <body>
+        <section id="data"></section>
+    </body>
+    <script>
+    
+    const Table =(_=>{
+        const Private = Symbol();
+        return class{
+            constructor(parent){}
+            async load(url){}
+            _render(){}
+        };
+    });
+
+    const Data = class{
+        async getData(){
+            const json = await this._getData();
+            return new Info(json);
+        }
+        async _getData(){
+            throw "_getData must overrided";
+        }
+    };
+
+    const Info = class{
+        constructor(json){
+            const {title, header, items} = json;
+            if(typeof title != 'string' || !title) throw "invalid title";
+            if(!Array.isArray(header) || !header.length) throw "invalid header";
+            if(!Array.isArray(items) || !items.length) throw "invalid items";
+            this._private = {title, header, items};
+        }
+        get title(){return this._private.title;}
+        get header(){return this._private.header;}
+        get items(){return this._private.items;}
+    };
+
+    const JsonData = class extends Data{
+        constructor(data){
+            super();
+            this._data = data;
+        }
+        async _getData(){
+            let json;
+            if(typeof this._data == 'string'){
+                const response = await fetch(this._data);
+                return await response.json();
+            }else json = this._data;
+        }
+    };
+
+    const Renderer = class{
+        constructor(){}
+        async render(data){
+            if(!(data instanceof Data)) throw "invalid data type";
+            this._info = await data.getData();
+            this._render();
+        }
+        _render(){
+            throw "_render must overrided";
+        }
+    }
+
+    const TableRenderer = class extends Renderer{
+        constructor(parent){
+            if(typeof parent != 'string' || !parent) throw "invalid param";
+            super();
+            this._parent = parent;
+        }
+        _render(){
+            //p.60 부터
+        }
+    }
+
+    const data = new JsonData("75_1.json");
+    const renderer = new Renderer();
+    renderer.render(data);
+
+    //const table  = new Table("#data");
+    //table.load("75_1.json");
+    </script>
+</html>
