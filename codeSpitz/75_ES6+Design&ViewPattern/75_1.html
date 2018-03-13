@@ -8,16 +8,7 @@
         <section id="data"></section>
     </body>
     <script>
-    
-    const Table =(_=>{
-        const Private = Symbol();
-        return class{
-            constructor(parent){}
-            async load(url){}
-            _render(){}
-        };
-    });
-
+        
     const Data = class{
         async getData(){
             const json = await this._getData();
