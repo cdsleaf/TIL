@@ -8,7 +8,21 @@
         <section id="data"></section>
     </body>
     <script>
-        
+
+    const Info = class{
+        constructor(json){
+            const {title, header, items} = json;
+            if(typeof title != 'string' || !title) throw "invalid title";
+            if(!Array.isArray(header) || !header.length) throw "invalid header";
+            if(!Array.isArray(items) || !items.length) throw "invalid items";
+            items.forEach(item=>{if(header.length != item.length) throw "invalid item :"+ item;});
+            this._private = {title, header, items};
+        }
+        get title(){return this._private.title;}
+        get header(){return this._private.header;}
+        get items(){return this._private.items;}
+    };
+
     const Data = class{
         async getData(){
             const json = await this._getData();
@@ -17,19 +31,6 @@
         async _getData(){
             throw "_getData must overrided";
         }
-    };
-
-    const Info = class{
-        constructor(json){
-            const {title, header, items} = json;
-            if(typeof title != 'string' || !title) throw "invalid title";
-            if(!Array.isArray(header) || !header.length) throw "invalid header";
-            if(!Array.isArray(items) || !items.length) throw "invalid items";
-            this._private = {title, header, items};
-        }
-        get title(){return this._private.title;}
-        get header(){return this._private.header;}
-        get items(){return this._private.items;}
     };
 
     const JsonData = class extends Data{
@@ -56,7 +57,10 @@
         _render(){
             throw "_render must overrided";
         }
-    }
+        get title(){return this._info.title;}
+        get header(){return this._info.header;}
+        get items(){return this._info.items;}
+    };
 
     const TableRenderer = class extends Renderer{
         constructor(parent){
@@ -69,15 +73,15 @@
             if(!parent) throw "invaild parent";
             parent.innerHTML = "";
             const [table, caption] = "table,caption".split(",").map(v=>document.createElement(v));
-            caption.innerHTML = this._info.title;
+            caption.innerHTML = this.title;
             table.appendChild(caption);
             table.appendChild(
-                this._info.header.reduce(
+                this.header.reduce(
                     (thead, data)=>(thead.appendChild(document.createElement("th")).innerHTML = data, thead),
                     document.createElement("thead"))
                 );
             parent.appendChild(
-                this._info.items.reduce(
+                this.items.reduce(
                     (table, row)=>(table.appendChild(
                         row.reduce(
                             (tr, data)=>(tr.appendChild(document.createElement("td")).innerHTML = data, tr),
@@ -86,9 +90,9 @@
                 table)
             );
         }
-    }
+    };
 
-    const data = new JsonData("https://raw.githubusercontent.com/cdsleaf/TIL/master/codeSpitz/75_ES6%2BDesign%26ViewPattern/75_1.json");
+    const data = new JsonData("https://gist.githubusercontent.com/cdsleaf/831669fc601689f4254d1da349fa1590/raw/01c99a74668f6b88e67a4b5b408199f1903de0d1/codeSpitz75_1.json");
     const renderer = new TableRenderer("#data");
     renderer.render(data);
 
