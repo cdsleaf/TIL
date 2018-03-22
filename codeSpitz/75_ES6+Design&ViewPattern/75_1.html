@@ -15,7 +15,7 @@
             if(typeof title != 'string' || !title) throw "invalid title";
             if(!Array.isArray(header) || !header.length) throw "invalid header";
             if(!Array.isArray(items) || !items.length) throw "invalid items";
-            items.forEach(item=>{if(header.length != item.length) throw "invalid item :"+ item;});
+            items.forEach(item=>{if(header.length != item.length) throw "invalid item :"+ item;});  //문제1의 해결방안. 길이를 체크 검증로직 추가.
             this._private = {title, header, items};
         }
         get title(){return this._private.title;}
@@ -57,7 +57,7 @@
         _render(){
             throw "_render must overrided";
         }
-        get title(){return this._info.title;}
+        get title(){return this._info.title;} //문제2의 해결방안. 자식이 직접 _info를 참조하지 않고 부모클래스에서 getter 함수를 정의해서 처리.
         get header(){return this._info.header;}
         get items(){return this._info.items;}
     };

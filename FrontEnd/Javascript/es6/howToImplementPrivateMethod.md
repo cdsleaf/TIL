@@ -13,7 +13,7 @@ const Test =(_=>{
 　　　      this[field] = a; //private 필드생성
 　　    }
 　　    [method](){ //private 메소드
-　　　      this[field]++;
+　　　      return this[field]++;
 　　    }
 　　    get a(){ //외부용 공개 메소드
 　　　      return this[method]();

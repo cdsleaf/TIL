@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CodeSpitz75-2</title>
+    </head>
+    <body>
+        <section id="data"></section>
+        <img id="s74"/>
+        <div id="s75"></div>
+    </body>
+    <script>
+    const Github = class{ 
+        constructor(id, repo){
+            this._base = `https://api.github.com/repos/${id}/${repo}/contents/`;
+        } 
+        load(path){
+            if(!this._parser) {throw 'parser is null';}
+            const id = 'callback' + Github._id++;
+            const f = Github[id] = ({data:{content}})=>{ 
+                delete Github[id];
+                document.head.removeChild(s);
+                this._parser[0](content, ...this._parser[1]); //인자배열 처리 할 수 있도록 변경 됨.  
+            };
+            const s = document.createElement('script');
+            s.src = `${this._base + path}?callback=Github.${id}`; 
+            documnet.head.appenChild(s);
+        }
+        setParser(f, ...arg){this._parser = [f, arg];} //함수외에 넘겨줄 인자배열이 추가 됨.
+    };
+    Github._id = 0;
+
+    const Loader = class{
+        constructor(){
+            this._router = new Map(); //라우팅 테이블
+        }
+        addRepo(repoKey, id, repo){
+            if(this._router.has(repoKey)){throw 'repokey is duplicated';}
+            this._router.set(repoKey, new Map());
+            this._router.get(repoKey).set('_git', new Github(id, repo));
+        }
+        addRouter(repoKey, ext, f, ...arg){//확장자를 처리하는 함수와 그 함수의 인자.
+            if(!this._router.has(repoKey)){throw 'invalid repokey';}
+            ext.split(',').forEach(v=>this._router.get(repoKey).set(v, [f, ...arg]));
+        }
+        load(repoKey, v){ //v는 확장자 
+            const ext = v.split('.').pop();
+            if(!this._router.has(repoKey)) {throw 'invalid repo key'}
+            if(!this._router.get(repoKey).get(ext)) {throw 'invalid filename extension'}
+            this._router.get(repoKey).get('_git').setParser(...this._router.get(repoKey).get(ext)); //라우팅 테이블에서 확장자를 찾아서 처리해준다. 이렇게 IF문 없이 처리가 가능.
+            this._router.get(repoKey).get('_git').load(v);
+        }
+    };
+    const el =v=>document.querySelector(v);
+    const d64 =v=>decodeURIComponent(atob(v).split('').map(c=>'%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    const parseMD = (content)=>{
+        return d64(content).split('\n').map(v=>{
+                let i=3;
+                while(i--){
+                    if(v.startsWith('#'.repeat(i + 1))) return `<h${i + 1}>${v.substr(i + 1)}</h${i + 1}>`;
+                }
+                return v;
+            }).join('<br>');
+    };
+    const img =(v, el)=>el.src = 'data:text/plain;base64,'+v;
+    const md =(v, el)=>el.innerHTML = parseMD(v);
+
+    const loader = new loader();
+
+    loader.addRepo('s74', 'hikaMaeng', 'codespitz74'); //s74 레포지토리 등록
+    loader.addRouter('s74', 'jpg,png,gif', img, el('#a')); //s74 라우터 등록
+    loader.addRouter('s74', 'md', md, el('#b')); //s74 라우터 등록
+
+    loader.addRepo('s75', 'hikaMaeng', 'codespitz75'); //s75 레포지토리 등록
+    loader.addRouter('s75', 'jpg,png,gif', img, el('#c')); //s75 라우터 등록
+    loader.addRouter('s75', 'md', md, el('#d')); //s75 라우터 등록
+
+    loader.load('s74', 'xx.jpg'); //레포지토리별 로드
+    loader.load('s75', 'xx.md');
+    </script>
+</html>
