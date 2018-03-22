@@ -6,8 +6,10 @@
     </head>
     <body>
         <section id="data"></section>
-        <img id="s74"/>
-        <div id="s75"></div>
+        <img id="s74Image"/>
+        <div id="s74Md"></div>
+        <img id="s75Image"/>
+        <div id="s75Md"></div>
     </body>
     <script>
     const Github = class{ 
@@ -24,7 +26,7 @@
             };
             const s = document.createElement('script');
             s.src = `${this._base + path}?callback=Github.${id}`; 
-            documnet.head.appenChild(s);
+            document.head.appendChild(s);
         }
         setParser(f, ...arg){this._parser = [f, arg];} //함수외에 넘겨줄 인자배열이 추가 됨.
     };
@@ -65,17 +67,17 @@
     const img =(v, el)=>el.src = 'data:text/plain;base64,'+v;
     const md =(v, el)=>el.innerHTML = parseMD(v);
 
-    const loader = new loader();
+    const loader = new Loader();
 
     loader.addRepo('s74', 'hikaMaeng', 'codespitz74'); //s74 레포지토리 등록
-    loader.addRouter('s74', 'jpg,png,gif', img, el('#a')); //s74 라우터 등록
-    loader.addRouter('s74', 'md', md, el('#b')); //s74 라우터 등록
+    loader.addRouter('s74', 'jpg,png,gif', img, el('#s74Image')); //s74 라우터 등록
+    loader.addRouter('s74', 'md', md, el('#s75Md')); //s74 라우터 등록
 
     loader.addRepo('s75', 'hikaMaeng', 'codespitz75'); //s75 레포지토리 등록
-    loader.addRouter('s75', 'jpg,png,gif', img, el('#c')); //s75 라우터 등록
-    loader.addRouter('s75', 'md', md, el('#d')); //s75 라우터 등록
+    loader.addRouter('s75', 'jpg,png,gif', img, el('#s75Image')); //s75 라우터 등록
+    loader.addRouter('s75', 'md', md, el('#s75Md')); //s75 라우터 등록
 
-    loader.load('s74', 'xx.jpg'); //레포지토리별 로드
-    loader.load('s75', 'xx.md');
+    loader.load('s74', 'einBig.png'); //레포지토리별 로드
+    loader.load('s75', 'README.md');
     </script>
 </html>
