@@ -28,28 +28,28 @@
             s.src = `${this._base + path}?callback=Github.${id}`; 
             document.head.appendChild(s);
         }
-        setParser(f, ...arg){this._parser = [f, arg];} //함수외에 넘겨줄 인자배열이 추가 됨.
+        setParser(f, ...arg){this._parser = [f, arg];}
     };
     Github._id = 0;
 
     const Loader = class{
         constructor(){
-            this._router = new Map(); //라우팅 테이블
+            this._router = new Map(); 
         }
         addRepo(repoKey, id, repo){
             if(this._router.has(repoKey)){throw 'repokey is duplicated';}
             this._router.set(repoKey, new Map());
             this._router.get(repoKey).set('_git', new Github(id, repo));
         }
-        addRouter(repoKey, ext, f, ...arg){//확장자를 처리하는 함수와 그 함수의 인자.
+        addRouter(repoKey, ext, f, ...arg){
             if(!this._router.has(repoKey)){throw 'invalid repokey';}
             ext.split(',').forEach(v=>this._router.get(repoKey).set(v, [f, ...arg]));
         }
-        load(repoKey, v){ //v는 확장자 
+        load(repoKey, v){ 
             const ext = v.split('.').pop();
             if(!this._router.has(repoKey)) {throw 'invalid repo key'}
             if(!this._router.get(repoKey).get(ext)) {throw 'invalid filename extension'}
-            this._router.get(repoKey).get('_git').setParser(...this._router.get(repoKey).get(ext)); //라우팅 테이블에서 확장자를 찾아서 처리해준다. 이렇게 IF문 없이 처리가 가능.
+            this._router.get(repoKey).get('_git').setParser(...this._router.get(repoKey).get(ext));
             this._router.get(repoKey).get('_git').load(v);
         }
     };
@@ -69,7 +69,7 @@
 
     const loader = new Loader();
 
-    loader.addRepo('s74', 'hikaMaeng', 'codespitz74'); //s74 레포지토리 등록
+    loader.addRepo('s74', 'hikaMaeng', 'codespitz75'); //s74 레포지토리 등록
     loader.addRouter('s74', 'jpg,png,gif', img, el('#s74Image')); //s74 라우터 등록
     loader.addRouter('s74', 'md', md, el('#s75Md')); //s74 라우터 등록
 

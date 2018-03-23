@@ -13,16 +13,18 @@
     const Github = class{ 
         constructor(id, repo){
             this._base = `https://api.github.com/repos/${id}/${repo}/contents/`;
-            this._id = 0;
         } 
         load(path){
             if(!this._loaderParser) {throw 'parser is null';}
             const id = 'callback' +Github._id++;
-            const f = Github[id] = ({data:{content}})=>{ 
-                delete Github[id];
-                document.head.removeChild(s);
-                this._loaderParser[0](content, ...this._loaderParser[1]);
-            };
+            const f = Github[id] = (_=>{            
+                const loaderParser = this._loaderParser;
+                return ({data:{content}})=>{
+                    delete Github[id];
+                    document.head.removeChild(s);
+                    loaderParser[0](content, ...loaderParser[1]);
+                }
+            })();
             const s = document.createElement('script');
             s.src = `${this._base + path}?callback=Github.${id}`; 
             document.head.appendChild(s);
