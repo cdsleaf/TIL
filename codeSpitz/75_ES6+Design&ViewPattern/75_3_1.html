@@ -119,9 +119,11 @@
                 'addEventListener', ['click', e=>this.add(item, e.target.previousSibling.value)])
             ));
             
-            const sub = el('section'); 
-            children.forEach(v=>{this._render(sub, item, v, depth+1)});
-            temp.push(sub);
+            if(children.length > 0){
+                const sub = el('section'); 
+                children.forEach(v=>{this._render(sub, item, v, depth+1)});
+                temp.push(sub);
+            }
             temp.forEach(v=>base.appendChild(v));
         }; 
     };
@@ -134,9 +136,12 @@
     const subsub1 = new TaskItem("subsub1");
     sub1.add(subsub1);
 
-    list1.getResult(Task.title);
+    //list1.getResult(Task.title);
 
     const todo = new DomRenderer(list1, sel('#todo'));
-    todo.render();    
+    todo.render(); 
+
+    const todoInConsole = new ConsoleRenderer(list1);
+    todoInConsole.render();   
     </script>
 </html>
