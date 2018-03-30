@@ -68,7 +68,7 @@
         sortDate(){return this;}
     };
 
-    const DomRenderer = class{
+    const Renderer = class{
         constructor(list, parent){
             this._parent = parent;
             this._list = list;
@@ -88,6 +88,15 @@
                 this.render();
             }
         }
+        render(){throw 'render must overrided';}
+    }
+
+    const DomRenderer = class extends Renderer{
+        
+        constructor(list, parent){
+            super(list, parent);
+        }
+
         render(){
             const parent = this._parent;
             parent.innerHTML = '';
@@ -100,6 +109,7 @@
             ), el('nav') ));
             this._render(parent, this._list, this._list.getResult(Task[this._sort]), 0);
         }
+        
         _render(base, parent, {item, children}, depth){
             const temp = [];
             base.style.paddingLeft = depth * 10 + 'px';
@@ -128,6 +138,67 @@
         }; 
     };
 
+    const ConsoleRenderer = class extends Renderer{
+        constructor(list, parent){
+            super(list, parent);
+        }
+
+        add(id, title, date){
+            //parent.add(new TaskItem(title, date));
+            this.render(); 
+        }
+        remove(parent, task){
+            //parent.remove(task);
+            this.render();
+        }
+        toggle(task){
+            if(task instanceof TaskItem){
+                task.toggle();
+                this.render();
+            }
+        }
+
+        render(){
+            const parent = this._parent;
+            parent.innerHTML = '';
+            parent.appendChild('title,date'.split(',').reduce((nav,c)=>(
+                nav.appendChild(
+                    el('button', 'innerHTML', c,
+                        '@fontWeight', this._sort == c? 'bold' : 'normal',
+                        'addEventListener', ['click', e=>(this._sort = Task[c], this.render())])
+                ), nav
+            ), el('nav') ));
+            this._render(parent, this._list, this._list.getResult(Task[this._sort]), 0);
+        }
+        
+        _render(base, parent, {item, children}, depth){
+            const temp = [];
+            base.style.paddingLeft = depth * 10 + 'px';
+            if(item instanceof TaskList){
+                temp.push(el('h2', 'innerHTML', item._title));
+            }else{
+                temp.push(
+                    el('h3', 'innerHTML', item._title, '@textDecoration', item.isComplete()?'line-through':'none'),
+                    el('time', 'innerHTML', item._date.toString(), 'datetime', item._date.toString()),
+                    el('button', 'innerHTML', item.isComplete() ? 'progress':'complete', 'addEventListener', ['click', _=>this.toggle(item)]),
+                    el('button', 'innerHTML', 'remove', 'addEventListener', ['click', _=>this.remove(parent, item)])
+                )
+            }
+            temp.push(el('section',
+                'appendChild', el('input', 'type', 'text'), 
+                'appendChild', el('button', 'innerHTML', 'addTask',
+                'addEventListener', ['click', e=>this.add(item, e.target.previousSibling.value)])
+            ));
+            
+            if(children.length > 0){
+                const sub = el('section'); 
+                children.forEach(v=>{this._render(sub, item, v, depth+1)});
+                temp.push(sub);
+            }
+            temp.forEach(v=>base.appendChild(v));
+        }; 
+    }
+
     const list1 = new TaskList('s75');
     const item1 = new TaskItem("3강교안작성");
     list1.add(item1);
@@ -143,5 +214,12 @@
 
     const todoInConsole = new ConsoleRenderer(list1);
     todoInConsole.render();   
+
+    //todoInConsole.add(); //id, name
+    //todoInConsole.remove(); //id
+    //todoInConsole.toggle(); //id
+
+
+    //console.log("1\n 2\n 21\n  3\n1"); 테스트용
     </script>
 </html>
