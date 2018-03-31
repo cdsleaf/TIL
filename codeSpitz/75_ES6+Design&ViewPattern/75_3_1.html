@@ -74,6 +74,18 @@
             this._list = list;
             this._sort = 'title';
         }
+        add(){throw 'add must overrided';}
+        remove(){throw 'remove must overrided';}
+        toggle(){throw 'toggle must overrided';}
+        render(){throw 'render must overrided';}
+    }
+
+    const DomRenderer = class extends Renderer{
+        
+        constructor(list, parent){
+            super(list, parent);
+        }
+
         add(parent, title, date){
             parent.add(new TaskItem(title, date));
             this.render(); 
@@ -87,14 +99,6 @@
                 task.toggle();
                 this.render();
             }
-        }
-        render(){throw 'render must overrided';}
-    }
-
-    const DomRenderer = class extends Renderer{
-        
-        constructor(list, parent){
-            super(list, parent);
         }
 
         render(){
@@ -144,14 +148,17 @@
         }
 
         add(id, title, date){
-            //parent.add(new TaskItem(title, date));
+            let newItem = new TaskItem(title, date);
+            this._keyMap.get(id).item.add(newItem);
+            this._keyMap.set(this._keyId++, {'parent':parent, 'item':newItem});
             this.render(); 
         }
-        remove(parent, task){
-            //parent.remove(task);
+        remove(id){
+            this._keyMap.get(id).parent.remove(this._keyMap.get(id).item);
             this.render();
         }
-        toggle(task){
+        toggle(id){
+            let task = this._keyMap.get(id).item;
             if(task instanceof TaskItem){
                 task.toggle();
                 this.render();
@@ -159,44 +166,28 @@
         }
 
         render(){
-            const parent = this._parent;
-            parent.innerHTML = '';
-            parent.appendChild('title,date'.split(',').reduce((nav,c)=>(
-                nav.appendChild(
-                    el('button', 'innerHTML', c,
-                        '@fontWeight', this._sort == c? 'bold' : 'normal',
-                        'addEventListener', ['click', e=>(this._sort = Task[c], this.render())])
-                ), nav
-            ), el('nav') ));
-            this._render(parent, this._list, this._list.getResult(Task[this._sort]), 0);
+            this._keyMap = new Map(); //template {key:id, value:{parent:xxx, item:zzz}}
+            this._keyId = 0;
+            let list = this._list.getResult(Task[this._sort]);
+            console.log(this._render(list.item, list, 0));
         }
-        
-        _render(base, parent, {item, children}, depth){
-            const temp = [];
-            base.style.paddingLeft = depth * 10 + 'px';
-            if(item instanceof TaskList){
-                temp.push(el('h2', 'innerHTML', item._title));
-            }else{
-                temp.push(
-                    el('h3', 'innerHTML', item._title, '@textDecoration', item.isComplete()?'line-through':'none'),
-                    el('time', 'innerHTML', item._date.toString(), 'datetime', item._date.toString()),
-                    el('button', 'innerHTML', item.isComplete() ? 'progress':'complete', 'addEventListener', ['click', _=>this.toggle(item)]),
-                    el('button', 'innerHTML', 'remove', 'addEventListener', ['click', _=>this.remove(parent, item)])
-                )
+
+        _render(parent, {item, children}, depth){
+            let _result = '';
+            for(let i=depth; i>0; i--){
+                _result  = '\t' + _result;
             }
-            temp.push(el('section',
-                'appendChild', el('input', 'type', 'text'), 
-                'appendChild', el('button', 'innerHTML', 'addTask',
-                'addEventListener', ['click', e=>this.add(item, e.target.previousSibling.value)])
-            ));
-            
+            _result += (this._keyId+":"+item._title+'\n');
+            this._keyMap.set(this._keyId, {'parent':parent, 'item':item});
+            this._keyId++;
+
             if(children.length > 0){
-                const sub = el('section'); 
-                children.forEach(v=>{this._render(sub, item, v, depth+1)});
-                temp.push(sub);
+                _result += children.reduce((r,v)=>{
+                    return r + this._render(item, v, depth+1)
+                }, '');
             }
-            temp.forEach(v=>base.appendChild(v));
-        }; 
+            return _result;
+        }
     }
 
     const list1 = new TaskList('s75');
@@ -215,11 +206,5 @@
     const todoInConsole = new ConsoleRenderer(list1);
     todoInConsole.render();   
 
-    //todoInConsole.add(); //id, name
-    //todoInConsole.remove(); //id
-    //todoInConsole.toggle(); //id
-
-
-    //console.log("1\n 2\n 21\n  3\n1"); 테스트용
     </script>
 </html>
