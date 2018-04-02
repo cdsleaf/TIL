@@ -108,7 +108,7 @@
                 nav.appendChild(
                     el('button', 'innerHTML', c,
                         '@fontWeight', this._sort == c? 'bold' : 'normal',
-                        'addEventListener', ['click', e=>(this._sort = Task[c], this.render())])
+                        'addEventListener', ['click', e=>(this._sort = e.target.innerText, this.render())])
                 ), nav
             ), el('nav') ));
             this._render(parent, this._list, this._list.getResult(Task[this._sort]), 0);
