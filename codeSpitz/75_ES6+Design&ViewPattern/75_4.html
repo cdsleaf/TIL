@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CodeSpitz75-4</title>
+    </head>
+    <body>
+        <section id="todo"></section>
+    </body>
+    <script>
+    const sel=(v, el = document)=>el.querySelector(v);
+    const el=(tag, ...attr)=>{
+        const el = typeof tag == 'string' ? document.createElement(tag) : tag;
+        for(let i = 0; i < attr.length;){
+            const k = attr[i++], v = attr[i++];
+            if(typeof el[k] == 'function') el[k](...(Array.isArray(v) ? v : [v]));
+            else if(k[0] == '@') el.style[k.substr(1)] = v;
+            else el[k] = v;
+        }
+        return el;
+    };
+    const err = (v='invalid') => {throw v;};
+    const override = _ => err('override');
+    const prop = (t, p) => Object.assign(t, p);
+    const is = (t, p) => t instanceof p;
+
+    const d64 = v => decodeURIComponent(atob(content).split('').map(c=>'%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    const snack = v => {
+        sel('#snack').innerHTML = v;
+        setTimeout(_ => sel('#snack').innerHTML = '', 3500);
+    };
+    const Observer = class {
+        observe(){override();}
+    };
+    const Subject = class{
+        constructor(){
+            this._observers = new Set;
+        }
+        addObserver(o){
+            if(!is(o, Observer)) err();
+            this._observers.add(o);
+        }
+        removeObserver(o){
+            if(!is(o, Observer)) err();
+            this._observers.delete(o);
+        }
+        notify(){
+            this._observers.forEach(o=>o.observe());
+        }
+    };
+    const TaskObserver = class extends Observer{
+        constructor(_task){
+            super();
+            prop(this, {_task});
+        }
+        observe(){
+            this._task.notify();
+        }
+    }
+    const Visitor = class {
+        set renderer(v) { this._renderer = v;}
+        reset() { override();}
+        operation(sort, stateGroup, task){ 
+            this._start(sort, stateGroup, task);
+            task.getResult(sort, stateGroup).children.forEach(
+                ({item}) => this.operation(sort, stateGroup, item)
+            );
+            this._end();
+        }
+        _start(task){ override();} 
+        _end(){ override();}
+    };
+    const DomVisitor = class extends Visitor {
+        constructor(_parent){
+            super();
+            prop(this, {_parent});
+        }
+        reset(){
+            this._current = el(sel(this._parent), 'innerHTML', '');
+        }
+        _start(sort, stateGroup, task){
+            if(!is(this._renderer, Renderer)) err();
+            switch(true){
+                case is(task, TaskItem): this._item(task); break;
+                case is(task, TaskList): this._list(task); break;
+            }
+            this._current = this._current.appendChild(el('section',
+                '@marginLeft', '15px',
+                'appendChild', el('input', 'type', 'text'),
+                'appendChild', el('button', 'innerHTML', 'addTask',
+                    'addEventListener', ['click', e => this._renderer.add(task, e.target.previousSibling.value)]))
+                    //renerer가 _list의 구조를 알고 있으므로 renderer를 호출하여 처리하는 것. mvc 모델에서 C와 같은 역할
+            );
+        }
+        _end(){
+            this._current = this._current.parentNode;
+        }
+        _list(task){
+            this._current.appendChild(el('h2', 'innerHTML', task.title));
+        }
+        _item(task){
+            [el('h3', 'innerHTML', task.title,
+                '@textDecoration', task.isComplete() ? 'line-through' : 'none'),
+            el('time', 'innerHTML', task.date, 'datetime', task.date),
+            el('button', 'innerHTML', task.isComplete() ? 'progress' : 'complete', 
+                'addEventListener', ['click', _=>this._renderer.toggle(task)]),
+            el('button', 'innerHTML', 'remove',
+                'addEventListener', ['click', _=>this._renerer.remove(parent, item),
+            ])].forEach(v=>this._current.appendChild(v));    
+        }
+    };
+    const Task = class extends Subject{
+        static title(a,b){return a._title > b._title;} 
+        static date(a,b){return a._date > b._date;}
+        constructor(_title= err(), _date = new Date){
+            super();
+            prop(this, { _title, _date, _list: [], _observer:new TaskObserver(this)}); //Observer를 소유함.
+        }
+        get title() { return this._title;}
+        get date() { return this._date.toUTCString();}
+        add(task){
+            if(!is(task, Task)) err(); 
+            this._list.push(task);
+            task.addObserver(this._observer);
+            this.notify();
+        }
+        remove(task){
+            const list = this._list;
+            if(list.includes(task)) err();
+            list.splice(list.indexOf(task), 1);
+            task.removeObserver(this._observer);
+            this.notify();
+        }
+        getResult(sort, stateGroup = true){ 
+            const list  = this._list;
+            return {
+                item:this,
+                children:(!stateGroup ? [...list].sort(sort) : [
+                    ...list.filter(v=>!v.isComplete()).sort(sort),
+                    ...list.filter(v=>v.isComplete()).sort(sort)
+                ]).map(v=>v.getResult(sort, stateGroup))
+            };
+        }
+        isComplete(){throw 'override';}
+    };
+    const TaskItem = class extends Task{
+        constructor(title, date){
+            super(title, date);
+            this._isComplete = false;
+        }
+        isComplete(){return this._isComplete;}
+        toggle(){
+            this._isComplete = !this._isComplete;
+            this.notify(); 
+        }
+    };
+    const TaskList = class extends Task{
+        constructor(title, date){super(title, date);}
+        isComplete(){}
+    };
+    const Renderer = class extends Observer{ 
+        constructor(_list = err(), _visitor = err()){
+            super();
+            prop(this, { _list, _visitor: prop(_visitor, { renderer: this }), _sort: 'title' });  
+            _list.addObserver(this);
+        }
+        observe(){
+            this.render();
+        }
+        add(parent, title, date){
+            if(!is(parent, Task)) err();
+            parent.add(new TaskItem(title, date));
+        }
+        remove(parent, task){
+            if(!is(parent, Task) || !is(task, Task)) err();
+            parent.remove(task);
+        }
+        toggle(task){
+            if(!is(task, TaskItem)) err();
+            task.toggle();
+        }
+        render(){
+            this._visitor.reset(); 
+            this._visitor.operation(Task[this._sort], true, this._list);
+        }
+    };
+
+    const list1 = new TaskList('s75');
+    const item1 = new TaskItem("3강교안작성");
+    list1.add(item1);
+    const sub1 = new TaskItem("코드정리");
+    item1.add(sub1);
+    const subsub1 = new TaskItem("subsub1");
+    sub1.add(subsub1);
+
+    const todo = new Renderer(list1, new DomVisitor('#todo'));
+    todo.render();
+    </script>
+</html>
