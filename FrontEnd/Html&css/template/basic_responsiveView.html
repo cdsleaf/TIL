@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 1rem 3rem;
+      box-sizing: border-box;
+      background-color: black;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    header > .logo > a {
+      text-decoration: none;
+      color: white;
+    }
+
+    header > nav > ul {
+      display: flex;
+      flex-direction: row;
+    }
+
+    header > nav > ul > li {
+      list-style: none;
+    }
+
+    header > nav > ul > li > a {
+      display: block;
+      padding: 1rem 1rem;
+      text-decoration: none;
+      color: white;
+    }
+
+    header > nav > ul > li > a:hover{
+      font-weight: bold;
+    }
+
+    .main {
+      background-color: grey;
+      overflow: auto;
+      text-align: center;
+      border: 0.1px solid black;
+      box-sizing: inherit;
+    }
+
+    .main div {
+      border: inherit;
+      box-sizing: inherit;
+    }
+ 
+    .box1 {
+      background-color: pink;
+    }
+
+    .box2 {
+      background-color:lightyellow;
+    }
+
+    .box3 {
+      background-color:skyblue;
+    }
+
+    .box4 {
+      background-color:lightgreen;
+    }
+
+    footer {
+      color: white;
+    }
+
+    @media screen and (min-width: 768px)  {
+      /* ipad size */
+      .main {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .area2 {
+        float:left;
+        width: 80%;
+      }     
+      .box4 {
+        float: left;
+        width: 20%
+      }
+    }
+
+    @media screen and (min-width: 600px) {
+      .area2:after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+
+      .box2 {
+        float: right;
+        width: 60%;
+      }
+      .box3 {
+        float: left;
+        width: 40%;
+      }
+    }
+  </style>
+  <script>
+    
+  </script>
+</head>
+<body>
+  <Header>
+    <div class="logo">
+      <a href>
+        <h1>Header Logo</h1>
+      </a>
+    </div>
+    <nav>
+      <ul>
+        <li>
+          <a href>ABOUT</a>
+        </li>
+        <li>
+          <a href>SERVICE</a>
+        </li>
+        <li>
+          <a href>CONTACT</a>
+        </li>
+      </ul> 
+    </nav>
+  </Header>
+  <div class="main">
+    <div class="box1">
+      <h3>Top: Box1</h3>
+    </div>
+    <div class="area2">
+      <div class="box2">
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+      </div>
+      <div class="box3">
+        <h3>Content: Box3</h3>
+        <h3>Content: Box3</h3>
+      </div>
+    </div>
+    <div class="box4">
+      <h3>End: Box4</h3>
+    </div>  
+  </div>
+  <footer>
+    footer
+  </footer>
+</body>
+</html>
