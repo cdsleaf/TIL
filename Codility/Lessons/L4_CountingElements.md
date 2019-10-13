@@ -70,3 +70,14 @@ function solution(N, A) {
     return result;
 }
 ```
+
+### Task 4 MissingInteger
+
+```javascript
+function solution(A) {
+    return Array.from(new Set(A))
+        .sort((a,b) => a-b)
+        .reduce((a,v) => v === a ? ++a : a, 1);
+}
+```
+
