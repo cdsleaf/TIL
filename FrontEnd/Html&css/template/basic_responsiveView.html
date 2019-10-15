@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Template</title>
   <style>
     body {
       margin: 1rem 3rem;
@@ -17,17 +17,33 @@
       justify-content: space-between;
     }
 
+    .header_sticky {
+      position: sticky;
+      top: -1rem;
+      background: black;
+      z-index: 999;
+
+      transform: translateY(1rem);
+      transition-duration: 0.5s;
+    }
+
+    .logo_title_sticky {
+      margin: 0;
+    }
+
     header > .logo > a {
       text-decoration: none;
       color: white;
     }
 
-    header > nav > ul {
-      display: flex;
-      flex-direction: row;
+    header > nav {
+      align-self: center;
     }
 
-    header > nav > ul > li {
+    header > nav > ul {
+      display: flex;
+      margin: 0;
+      padding: 0;
       list-style: none;
     }
 
@@ -60,7 +76,15 @@
     }
 
     .box2 {
+      position: relative;
       background-color:lightyellow;
+    }
+
+    .box2_1 {
+      position: absolute;
+      background-color: brown;
+      top: 1rem;
+      left: 1rem; 
     }
 
     .box3 {
@@ -72,6 +96,11 @@
     }
 
     footer {
+      margin-top: 1rem;
+    }
+
+    footer p {
+      margin: 0;
       color: white;
     }
 
@@ -110,14 +139,24 @@
     }
   </style>
   <script>
-    
+    window.onscroll = () => {
+      const header = document.getElementsByTagName("header")[0];
+      const logoTitle = document.getElementById("logo_title");
+      if(window.pageYOffset >= 200){
+        header.classList.add("header_sticky");
+        logoTitle.classList.add("logo_title_sticky");
+      }else{
+        header.classList.remove("header_sticky");
+        logoTitle.classList.remove("logo_title_sticky");
+      }
+    };
   </script>
 </head>
 <body>
   <Header>
     <div class="logo">
       <a href>
-        <h1>Header Logo</h1>
+        <h1 id="logo_title">Header Logo</h1>
       </a>
     </div>
     <nav>
@@ -159,6 +198,11 @@
         <h3>Content: Box2</h3>
         <h3>Content: Box2</h3>
         <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <h3>Content: Box2</h3>
+        <div class="box2_1">
+          <h3>Content: Box2_1</h3>
+        </div>
       </div>
       <div class="box3">
         <h3>Content: Box3</h3>
@@ -170,7 +214,7 @@
     </div>  
   </div>
   <footer>
-    footer
+    <p>Copyright &copy; Theo</p>
   </footer>
 </body>
 </html>
