@@ -25,29 +25,27 @@ function solution(A) {
 ```
 ### Task 2 GenomicRangeQuery
 
+time complexity: O(N + M)
+
 ```javascript
-function solution(S, P, Q) {
-    const arrayS = Array.from(S);
-    const map = new Map([['A', 1], ['C', 2], ['G', 3], ['T', 4]]);
-    const memo = Array.from(Array(S.length), () => Array());
-    const searchFn = (first, end) => {
-        if(Array.from(new Set(arrayS.slice(first, end+1))).length === 1){
-            return memo[first][end] = memo[first][first];
-        }
-        if(!memo[first][end]){
-            memo[first][end] = Math.min(searchFn(first, end-1), memo[end][end]); 
-        }
-        return memo[first][end]; 
-    };
-    
-    let result = [];
-    
-    arrayS.forEach((v, i) => memo[i][i] = map.get(v));
-    
-    for(let i=0; i< P.length; i++){
-        result.push(searchFn(P[i], Q[i]));
-    }
-    
-    return result;
+function solution (S, P, Q) {
+	let dna = '';
+	let result = [];
+
+	for (let i=0; i < P.length; i++) {
+		dna = S.slice(P[i], Q[i] + 1);
+
+		if (dna.indexOf('A') !== -1) {
+			result.push(1)
+		} else if (dna.indexOf('C') !== -1) {
+			result.push(2)
+		} else if (dna.indexOf('G') !== -1) {
+			result.push(3)
+		} else {
+			result.push(4)
+		}
+	}
+
+	return result;
 }
 ```
